@@ -2,7 +2,7 @@
 
 # Project info
 Python Parser Project for CS4450, created by "Parser? I barely know 'er"
-\n Group Members: Dee Archdekin, Mel Tully, Zoe Spriggs, David Douglas
+Group Members: Dee Archdekin, Mel Tully, Zoe Spriggs, David Douglas
 The goal of this project is to create a parser for the Python language, using Antlr
 
 # Environment & Necessary Software
