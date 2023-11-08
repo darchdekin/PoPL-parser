@@ -8,8 +8,9 @@ line: assign_statement | if_statement;
 // statements
 assign_statement: VAR assign_operator value | VAR assign_operator athm_expr ;
 if_statement: ('if ' bool_statement ':' | 'elif ' bool_statement ':') NEWLINE ('   'line NEWLINE)+;
-bool_statement: bool | comparison | bool_statement (logic_operator bool_statement)+ | '(' bool_statement ')';
+bool_statement: bool_value | comparison | bool_statement (logic_operator bool_statement)+ | '(' bool_statement ')';
 comparison: value bool_operator value ;
+bool_value: bool | 'not ' bool;
 
 // datatypes
 int: '-'? DIGIT+;
