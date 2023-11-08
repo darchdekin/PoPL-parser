@@ -34,3 +34,4 @@ athm_expr: value (arith_operator value)+ ;
 NEWLINE: [\n\r] ;
 DIGIT:  [0-9] ;
 VAR: 	([a-zA-Z] | '_') ([a-zA-Z0-9] | '_')* ;
+SPACE : ' '+ -> skip ;
