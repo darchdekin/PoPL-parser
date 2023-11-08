@@ -6,7 +6,7 @@ start: NEWLINE* line (NEWLINE+ line)* NEWLINE* EOF;
 line: assign_statement;
 
 // statements
-assign_statement: VAR assign_operator value ;
+assign_statement: VAR assign_operator value | VAR assign_operator athm_expr ;
 
 // datatypes
 int: '-'? DIGIT+;
@@ -19,14 +19,14 @@ string:
 
 
 literal: bool | int | float | string;
-value: VAR | literal | athm_expr | '(' value ')' | list ;
+value: VAR | literal | '(' value ')' | list ;
 list: '[' (value (',' value)*)? ']' ;
 
 //operators
 arith_operator: ( '+' | '-' | '*' | '/' | '%' ) ;
 assign_operator: ( '=' | '+=' | '-=' | '*=' | '/=' ) ;
 
-athm_expr: value arith_operator value ;
+athm_expr: value (arith_operator value)+ ;
 
 
 // Lexer rules
