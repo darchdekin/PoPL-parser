@@ -25,6 +25,8 @@ list: '[' (value (',' value)*)? ']' ;
 //operators
 arith_operator: ( '+' | '-' | '*' | '/' | '%' ) ;
 assign_operator: ( '=' | '+=' | '-=' | '*=' | '/=' ) ;
+relat_operator: ( '<' | '>' | '>=' | '<=' | '==' | '!=') ;
+logic_operator: ( 'and' | 'not' | 'or' ) ;
 
 athm_expr: value (arith_operator value)+ ;
 
