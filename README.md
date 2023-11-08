@@ -2,7 +2,7 @@
 
 # Project info
 Python Parser Project for CS4450, created by "Parser? I barely know 'er"
-Group Members: Dee Archdekin, Mel Tully, Zoe Spriggs, David Douglas
+\n Group Members: Dee Archdekin, Mel Tully, Zoe Spriggs, David Douglas
 The goal of this project is to create a parser for the Python language, using Antlr
 
 # Environment & Necessary Software
@@ -13,4 +13,4 @@ This project uses the Python version of Antlr
 
 # How to run the parser
 Use the following command to run the test cases & output the parse tree:
-antlr4-parse P1.g4 start <test file name>
+antlr4-parse P1.g4 start [test file name]
