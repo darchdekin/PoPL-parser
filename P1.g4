@@ -62,5 +62,5 @@ NEWLINE: [\n\r] ;
 DIGIT:  [0-9] ;
 VAR: 	([a-zA-Z] | '_') ([a-zA-Z0-9] | '_')* ;
 SPACE : ' '+ -> skip ;
-BOOLEAN: 'true' | 'false';
+BOOLEAN: 'True' | 'False';
 NL: ('\r'? '\n' ' '*) | ('\r'? '\n' '\t'*); //For tabs just switch out ' '* with '\t'*;
