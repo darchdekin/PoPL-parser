@@ -27,8 +27,8 @@ def nextToken(self):
 
 // Parser rules
 
-start: NEWLINE* line (NL+ line)* NEWLINE* EOF;
-line: assign_statement | conditional_statement;
+start: NEWLINE* line (NL* line)* NEWLINE* EOF;
+line: assign_statement NEWLINE | conditional_statement NEWLINE;
 block: INDENT (line NL)+ DEDENT;
 
 // statements
