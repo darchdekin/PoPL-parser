@@ -16,6 +16,6 @@ This project uses the Python version of Antlr
 ## How to run the parser
 
 Use the following command to run the test cases & output the parse tree:
-`antlr4-parse P1.g4 start [test file name]`
+`antlr4-parse P1.g4 start [test file name] -gui`
 
 **Note that is a unique branch for deliverable1 and deliverable2. Deliverable 3 will be on branch Main.**
