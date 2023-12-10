@@ -29,13 +29,23 @@ def nextToken(self):
 start: line+ EOF;
 block: INDENT line+ DEDENT ;
 
-line: (assign_statement NL | if_statement);
+line: (assign_statement NL | if_statement | loop | comment NL);
 
 // statements
 assign_statement: VAR assign_operator value | VAR assign_operator athm_expr ;
 if_statement: 'if ' bool_statement ':' block ('elif ' bool_statement ':' block )* ('else:' block )?;
-bool_statement: bool | comparison | bool_statement (logic_operator bool_statement)+ | '(' bool_statement ')' | 'not ' bool_statement;
+bool_statement: bool | comparison | bool_statement (logic_operator bool_statement)+ | '(' bool_statement ')' | 'not ' bool_statement | VAR;
 comparison: value relat_operator value;
+loop: (while_loop | for_loop) block;
+
+comment: single_line_comment | multi_line_comment;
+single_line_comment: '#' (~NL)* ;
+multi_line_comment: THREEQUOTES ~(EOF | THREEQUOTES)* THREEQUOTES ;
+
+// loops
+while_loop: ( 'while ' bool_statement ':' ) | ( 'while(' bool_statement '):' );
+for_loop: 'for ' VAR ' in ' (VAR ':' | 'range(' int (',' int)? (',' int)? '):') ;
+
 
 // datatypes
 int: '-'? DIGIT+;
@@ -65,3 +75,4 @@ NL: ('\r'? '\n' ' '*) | ('\r'? '\n' '\t'*); //For tabs just switch out ' '* with
 DIGIT:  [0-9] ;
 VAR: 	([a-zA-Z] | '_') ([a-zA-Z0-9] | '_')* ;
 SPACE : ' '+ -> skip ;
+THREEQUOTES: '\'\'\'' ;
