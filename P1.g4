@@ -29,11 +29,13 @@ def nextToken(self):
 start: line+ EOF;
 block: INDENT line+ DEDENT ;
 
-line: (assign_statement NL | conditional_statement);
+line: (assign_statement NL | if_statement);
 
 // statements
 assign_statement: VAR assign_operator value | VAR assign_operator athm_expr ;
-conditional_statement: 'if ' conditional_value ':' block ('elif ' conditional_value ':' block)* ('else:' block)?;
+if_statement: 'if ' bool_statement ':' block ('elif ' bool_statement ':' block )* ('else:' block )?;
+bool_statement: bool | comparison | bool_statement (logic_operator bool_statement)+ | '(' bool_statement ')' | 'not ' bool_statement;
+comparison: value relat_operator value;
 
 // datatypes
 int: '-'? DIGIT+;
@@ -52,9 +54,10 @@ list: '[' (value (',' value)*)? ']' ;
 //operators
 arith_operator: ( '+' | '-' | '*' | '/' | '%' ) ;
 assign_operator: ( '=' | '+=' | '-=' | '*=' | '/=' ) ;
+relat_operator: ( '<' | '>' | '>=' | '<=' | '==' | '!=') ;
+logic_operator: ( 'and' | 'or' ) ;
 
 athm_expr: value (arith_operator value)+ ;
-conditional_value: 'True' | 'False';
 
 // Lexer rules
 
@@ -62,4 +65,3 @@ NL: ('\r'? '\n' ' '*) | ('\r'? '\n' '\t'*); //For tabs just switch out ' '* with
 DIGIT:  [0-9] ;
 VAR: 	([a-zA-Z] | '_') ([a-zA-Z0-9] | '_')* ;
 SPACE : ' '+ -> skip ;
-BOOLEAN: 'True' | 'False';
