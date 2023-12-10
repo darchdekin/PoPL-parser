@@ -4,32 +4,32 @@ tokens { INDENT, DEDENT }
 
 @lexer::header{
 from antlr_denter.DenterHelper import DenterHelper
-from MyCoolParser import MyCoolParser
+from P1Parser import P1Parser
 }
 @lexer::members {
-class MyCoolDenter(DenterHelper):
+class P1Denter(DenterHelper):
     def __init__(self, lexer, nl_token, indent_token, dedent_token, ignore_eof):
         super().__init__(nl_token, indent_token, dedent_token, ignore_eof)
-        self.lexer: MyCoolLexer = lexer
+        self.lexer: P1Lexer = lexer
 
     def pull_token(self):
-        return super(MyCoolLexer, self.lexer).nextToken()
+        return super(P1Lexer, self.lexer).nextToken()
 
 denter = None
 
 def nextToken(self):
     if not self.denter:
-        self.denter = self.MyCoolDenter(self, self.NL, MyCoolParser.INDENT, MyCoolParser.DEDENT, ***Should Ignore EOF***)
+        self.denter = self.P1Denter(self, self.NL, P1Parser.INDENT, P1Parser.DEDENT, False)
     return self.denter.next_token()
-
 }
 
 
 // Parser rules
 
-start: NEWLINE* line (NL* line)* NEWLINE* EOF;
-line: assign_statement NEWLINE | conditional_statement NEWLINE;
-block: INDENT (line NL)+ DEDENT;
+start: line+ EOF;
+block: INDENT line+ DEDENT ;
+
+line: (assign_statement NL | conditional_statement);
 
 // statements
 assign_statement: VAR assign_operator value | VAR assign_operator athm_expr ;
@@ -40,8 +40,8 @@ int: '-'? DIGIT+;
 bool: 'True' | 'False' ;
 float: '-'? ( DIGIT+ '.' DIGIT* | '.' DIGIT+ ) ;
 string:
-	  ( '"' ( '\\"' | ~(NEWLINE | '"') )* '"' )		// Double-quote string
-	| ( '\'' ( '\\\'' | ~(NEWLINE | '\'') )* '\'')		// Single-quote string
+	  ( '"' ( '\\"' | ~(NL | '"') )* '"' )		// Double-quote string
+	| ( '\'' ( '\\\'' | ~(NL | '\'') )* '\'')		// Single-quote string
 	;
 
 
@@ -54,13 +54,12 @@ arith_operator: ( '+' | '-' | '*' | '/' | '%' ) ;
 assign_operator: ( '=' | '+=' | '-=' | '*=' | '/=' ) ;
 
 athm_expr: value (arith_operator value)+ ;
-conditional_value: 'true' | 'false';
+conditional_value: 'True' | 'False';
 
 // Lexer rules
 
-NEWLINE: [\n\r] ;
+NL: ('\r'? '\n' ' '*) | ('\r'? '\n' '\t'*); //For tabs just switch out ' '* with '\t'*;
 DIGIT:  [0-9] ;
 VAR: 	([a-zA-Z] | '_') ([a-zA-Z0-9] | '_')* ;
 SPACE : ' '+ -> skip ;
 BOOLEAN: 'True' | 'False';
-NL: ('\r'? '\n' ' '*) | ('\r'? '\n' '\t'*); //For tabs just switch out ' '* with '\t'*;

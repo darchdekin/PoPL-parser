@@ -1,23 +1,20 @@
 import sys
-from io import StringIO
 from antlr4 import *
-from ExprLexer import ExprLexer
-from ExprParser import ExprParser
+from P1Lexer import P1Lexer
+from P1Parser import P1Parser
 
-#Coded with support from provided class files from Dr. Ufukepte
-#DISREGARD THIS FILE FOR NOW, it is a work in progress........
 
-def main():  
-    inputFile = open("project_deliverable_1_testcase.py", "r")
-	for x in inputFile:
-		s = InputStream(x)
-		lexer = ExprLexer(s)
-		stream = CommonTokenStream(lexer)
-		parser = ExprParser(stream)
-		tree = parser.prog()
-		if parser.getNumberOfSyntaxErrors() > 0:
-			print("failed: " + s)
-		else:
-			print("passed!")
+def main(argv):
+    if len(sys.argv) > 1:
+        ins = FileStream(sys.argv[1])
+    else:
+        ins = InputStream(sys.stdin.readline())
 
-main()
+    lexer = P1Lexer(ins)
+    tokens = CommonTokenStream(lexer)
+    parser = P1Parser(tokens)
+    tree = parser.start()
+    print(tree.toStringTree(recog=parser))
+
+if __name__ == '__main__':
+    main(sys.argv)
