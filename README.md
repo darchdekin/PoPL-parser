@@ -11,12 +11,16 @@ we have been collaborating online and in-person.
 
 ## Environment & Necessary Software
 
-Any environment can be used, but Antlr & Python3 install is required
-Python can be installed here: https://www.python.org/downloads/
-Antlr can be installed here: https://www.antlr.org/download.html
-Note when installing Antlr that this project uses the Python version of Antlr. 
-This project also makes use of AntlrDenter. Further information on AntlrDenter can 
-be found here: https://github.com/yshavit/antlr-denter
+Any environment can be used, but Antlr & Python3 install is required  
+
+Python can be installed here: https://www.python.org/downloads/  
+
+Antlr can be installed here: https://www.antlr.org/download.html  
+
+Note when installing Antlr that this project uses the Python version of Antlr.  
+
+This project also makes use of AntlrDenter. Further information on AntlrDenter can be found here: https://github.com/yshavit/antlr-denter  
+
 You can install using 'pip install antlr-denter'
 
 ## How to run the parser
