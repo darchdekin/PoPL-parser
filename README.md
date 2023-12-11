@@ -25,9 +25,12 @@ You can install using 'pip install antlr-denter'
 
 ## How to run the parser
 
-After installing python, you must run the following command to build the program: 
+After installing python, you must run the following command to build the program:
+
 'antlr4 -v 4.13.0 -Dlanguage=Python3 P1.g4'
-This will generate the necessary files in order to run the driver program, driver.py.
-This can be done by running the command: 'python3 driver.py file_to_parse.txt'
+
+This will generate the necessary files in order to run the driver program, driver.py. This can be done by running the command: 
+
+'python3 driver.py file_to_parse.txt'
 
 **Note that there is a unique branch for deliverable1 and deliverable2. Deliverable 3 will be on branch Main.**
