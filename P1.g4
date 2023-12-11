@@ -1,24 +1,58 @@
 grammar P1;
 
+tokens { INDENT, DEDENT }
+
+@lexer::header{
+from antlr_denter.DenterHelper import DenterHelper
+from P1Parser import P1Parser
+}
+@lexer::members {
+class P1Denter(DenterHelper):
+    def __init__(self, lexer, nl_token, indent_token, dedent_token, ignore_eof):
+        super().__init__(nl_token, indent_token, dedent_token, ignore_eof)
+        self.lexer: P1Lexer = lexer
+
+    def pull_token(self):
+        return super(P1Lexer, self.lexer).nextToken()
+
+denter = None
+
+def nextToken(self):
+    if not self.denter:
+        self.denter = self.P1Denter(self, self.NL, P1Parser.INDENT, P1Parser.DEDENT, False)
+    return self.denter.next_token()
+}
+
+
 // Parser rules
 
-start: NEWLINE* line (NEWLINE+ line)* NEWLINE* EOF;
-line: assign_statement | if_statement;
+start: line+ EOF;
+block: INDENT line+ DEDENT ;
+
+line: (assign_statement NL | if_statement | loop | comment NL);
 
 // statements
 assign_statement: VAR assign_operator value | VAR assign_operator athm_expr ;
-if_statement: 'if ' bool_statement ':' NEWLINE* ('\t'line NEWLINE*)+ ('elif ' bool_statement ':' NEWLINE* ('\t'line NEWLINE*)+)* ('else:' NEWLINE* ('\t'line NEWLINE*)+)?;
-bool_statement: bool_value | comparison | bool_statement (logic_operator bool_statement)+ | '(' bool_statement ')';
-comparison: bool_value relat_operator bool_value;
-bool_value: value | 'not ' value;
+if_statement: 'if ' bool_statement ':' block ('elif ' bool_statement ':' block )* ('else:' block )?;
+bool_statement: bool | comparison | bool_statement (logic_operator bool_statement)+ | '(' bool_statement ')' | 'not ' bool_statement | VAR;
+comparison: value relat_operator value;
+loop: (while_loop | for_loop) block;
+
+comment: single_line_comment | multi_line_comment;
+single_line_comment: '#' (~NL)* ;
+multi_line_comment: THREEQUOTES ~(EOF | THREEQUOTES)* THREEQUOTES ;
+
+// loops
+while_loop: ( 'while ' bool_statement ':' ) | ( 'while(' bool_statement '):' );
+for_loop: 'for ' VAR ' in ' (VAR ':' | 'range(' int (',' int)? (',' int)? '):') ;
 
 // datatypes
 int: '-'? DIGIT+;
 bool: 'True' | 'False' ;
 float: '-'? ( DIGIT+ '.' DIGIT* | '.' DIGIT+ ) ;
 string:
-	  ( '"' ( '\\"' | ~(NEWLINE | '"') )* '"' )		// Double-quote string
-	| ( '\'' ( '\\\'' | ~(NEWLINE | '\'') )* '\'')		// Single-quote string
+	  ( '"' ( '\\"' | ~(NL | '"') )* '"' )		// Double-quote string
+	| ( '\'' ( '\\\'' | ~(NL | '\'') )* '\'')		// Single-quote string
 	;
 
 
@@ -30,15 +64,15 @@ list: '[' (value (',' value)*)? ']' ;
 arith_operator: ( '+' | '-' | '*' | '/' | '%' ) ;
 assign_operator: ( '=' | '+=' | '-=' | '*=' | '/=' ) ;
 relat_operator: ( '<' | '>' | '>=' | '<=' | '==' | '!=') ;
-logic_operator: ( 'and' | 'not' | 'or' ) ;
+logic_operator: ( 'and' | 'or' ) ;
 
 athm_expr: value (arith_operator value)+ ;
-
 
 // Lexer rules
 
 
-NEWLINE: ('\t')* ([\n\r]) ;
+NL: ('\r'? '\n' ' '*) | ('\r'? '\n' '\t'*); //For tabs just switch out ' '* with '\t'*;
 DIGIT:  [0-9] ;
 VAR: 	([a-zA-Z] | '_') ([a-zA-Z0-9] | '_')* ;
 SPACE : ' '+ -> skip ;
+THREEQUOTES: '\'\'\'' ;
