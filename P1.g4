@@ -46,7 +46,6 @@ multi_line_comment: THREEQUOTES ~(EOF | THREEQUOTES)* THREEQUOTES ;
 while_loop: ( 'while ' bool_statement ':' ) | ( 'while(' bool_statement '):' );
 for_loop: 'for ' VAR ' in ' (VAR ':' | 'range(' int (',' int)? (',' int)? '):') ;
 
-
 // datatypes
 int: '-'? DIGIT+;
 bool: 'True' | 'False' ;
@@ -70,6 +69,7 @@ logic_operator: ( 'and' | 'or' ) ;
 athm_expr: value (arith_operator value)+ ;
 
 // Lexer rules
+
 
 NL: ('\r'? '\n' ' '*) | ('\r'? '\n' '\t'*); //For tabs just switch out ' '* with '\t'*;
 DIGIT:  [0-9] ;
